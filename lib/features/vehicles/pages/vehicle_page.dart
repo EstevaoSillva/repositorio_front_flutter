@@ -2,16 +2,16 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-import '../config.dart'; // Configuração das URLs
+import '../../../shared/config/config.dart'; // Configuração das URLs
 
-class VehicleForm extends StatefulWidget {
-  const VehicleForm({super.key});
+class VehiclePage extends StatefulWidget {
+  const VehiclePage({super.key});
 
   @override
-  _VehicleFormState createState() => _VehicleFormState();
+  _VehiclePageState createState() => _VehiclePageState();
 }
 
-class _VehicleFormState extends State<VehicleForm> {
+class _VehiclePageState extends State<VehiclePage> {
   final _formKey = GlobalKey<FormState>();
   final TextEditingController _marcaController = TextEditingController();
   final TextEditingController _modeloController = TextEditingController();

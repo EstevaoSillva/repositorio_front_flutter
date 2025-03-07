@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:manutencar_mobile/controllers/auth_controller.dart';
+import 'package:manutencar_mobile/features/auth/controllers/auth_controller.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 
 class LoginPage extends StatefulWidget {

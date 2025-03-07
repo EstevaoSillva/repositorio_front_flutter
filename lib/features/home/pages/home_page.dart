@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../controllers/home_controller.dart';
-import '../controllers/auth_controller.dart';
-import '../styles/app_styles.dart';
+import '../../auth/controllers/auth_controller.dart';
+import '../../../shared/styles/app_styles.dart';
 
 class HomePage extends StatelessWidget {
   final AuthController authController = Get.find<AuthController>();
-  final HomeController homeController = Get.put(HomeController());
+  final HomeController homeController = Get.find<HomeController>();
   final TextEditingController odometerController = TextEditingController();
   final RxBool showOdometerInput = false.obs;
 
@@ -14,12 +14,14 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    print("HomePage construída"); // Log para debug
+
     return Scaffold(
       backgroundColor: AppStyles.backgroundColor,
       appBar: AppBar(
         backgroundColor: AppStyles.primaryColor,
         title: Obx(() => Text(
-              'Bem-vindo, ${authController.userInfo['nome'] ?? 'Usuário'}!', // Verifica se 'nome' existe
+              'Bem-vindo, ${authController.userInfo['Nome'] ?? 'Usuário'}!',
               style: TextStyle(color: Colors.white),
             )),
         actions: [
@@ -29,7 +31,9 @@ class HomePage extends StatelessWidget {
           ),
           IconButton(
             icon: Icon(Icons.settings, color: Colors.white),
-            onPressed: () {},
+            onPressed: () {
+              Get.toNamed('/settings');
+            },
           ),
         ],
       ),
@@ -80,14 +84,14 @@ class HomePage extends StatelessWidget {
                         ? Row(
                             children: [
                               Expanded(
-                                child: TextFormField( // Usa TextFormField
+                                child: TextFormField(
                                   controller: odometerController,
                                   keyboardType: TextInputType.number,
                                   decoration: InputDecoration(
                                     hintText: "Novo valor",
                                     border: OutlineInputBorder(),
                                   ),
-                                  validator: (value) { // Validação do Hodômetro
+                                  validator: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Por favor, insira um valor';
                                     }
@@ -104,7 +108,7 @@ class HomePage extends StatelessWidget {
                                   int newOdometer = int.tryParse(odometerController.text) ?? homeController.odometer.value;
                                   homeController.updateOdometer(newOdometer);
                                   showOdometerInput.value = false;
-                                  Get.snackbar("Sucesso", "Hodômetro atualizado", backgroundColor: Colors.green, colorText: Colors.white); // Feedback
+                                  Get.snackbar("Sucesso", "Hodômetro atualizado", backgroundColor: Colors.green, colorText: Colors.white);
                                 },
                               ),
                             ],
@@ -127,7 +131,7 @@ class HomePage extends StatelessWidget {
               ),
               SizedBox(height: 20),
               Text("Próximos Serviços", style: AppStyles.title),
-              Obx(() { // Usando Obx para rebuild quando necessário
+              Obx(() {
                 return Column(
                   children: homeController.services.map((service) {
                     return _buildServiceBar(service['name'], service['km'], service['color']);
@@ -138,18 +142,6 @@ class HomePage extends StatelessWidget {
           );
         }),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppStyles.primaryColor,
-        unselectedItemColor: Colors.grey,
-        items: [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: "Home"),
-          BottomNavigationBarItem(icon: Icon(Icons.bar_chart), label: "Relatórios"),
-          BottomNavigationBarItem(icon: Icon(Icons.directions_car), label: "Veículos"),
-          BottomNavigationBarItem(icon: Icon(Icons.build), label: "Serviços"),
-          BottomNavigationBarItem(icon: Icon(Icons.local_gas_station), label: "Abastecer"),
-        ],
-      ),
     );
   }
 
@@ -158,7 +150,7 @@ class HomePage extends StatelessWidget {
       margin: EdgeInsets.only(bottom: 10),
       padding: EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.2),
+        color: color.withOpacity(0.2), // Corrigido: use withOpacity em vez de withValues
         borderRadius: BorderRadius.circular(10),
       ),
       child: Row(

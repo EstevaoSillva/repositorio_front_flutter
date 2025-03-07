@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import '../controllers/auth_controller.dart'; // Importe o AuthController
+import '../controllers/auth_controller.dart'; 
 
 class RegisterScreen extends StatefulWidget {
   const RegisterScreen({super.key});
@@ -12,7 +12,6 @@ class RegisterScreen extends StatefulWidget {
 class _RegisterScreenState extends State<RegisterScreen> {
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
-  final TextEditingController _telefoneController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _confirmPasswordController = TextEditingController();
   final _formKey = GlobalKey<FormState>(); // Chave para o Form
@@ -41,13 +40,13 @@ class _RegisterScreenState extends State<RegisterScreen> {
       }
 
       try {
-        print(" Enviando dados para API: ${_usernameController.text}, ${_emailController.text}, ${_telefoneController.text}");
+        print(" Enviando dados para API: ${_usernameController.text}, ${_emailController.text}");
 
-        await _authController.register( // Usa AuthController
+        await _authController.register(
           username: _usernameController.text,
           email: _emailController.text,
-          telefone: _telefoneController.text,
           password: _passwordController.text,
+          confirmacaoSenha: _confirmPasswordController.text, 
         );
 
         if (_authController.errorMessage.isEmpty) {
@@ -97,18 +96,6 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       .hasMatch(value)) {
                     return 'Por favor, insira um email válido';
                   }
-                  return null;
-                },
-              ),
-              TextFormField( // Usa TextFormField
-                controller: _telefoneController,
-                decoration: InputDecoration(labelText: "Telefone"),
-                keyboardType: TextInputType.phone,
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Por favor, insira o telefone';
-                  }
-                  // Adicione validação de telefone aqui, se necessário
                   return null;
                 },
               ),

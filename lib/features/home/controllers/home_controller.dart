@@ -1,7 +1,7 @@
 import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../config.dart';
+import '../../../shared/config/config.dart';
 import 'package:flutter/material.dart'; // Importe o Material para cores
 
 class HomeController extends GetxController {
@@ -11,22 +11,23 @@ class HomeController extends GetxController {
   var selectedVehicle = "".obs;
   var vehicles = <String>[].obs;
   var notifications = <String>[].obs;
-  var errorMessage = ''.obs; // Adicionado para mensagens de erro
-  var services = <Map<String, dynamic>>[].obs; // Adicionado para dados de serviços
+  var errorMessage = ''.obs; 
+  var services = <Map<String, dynamic>>[].obs; 
 
   final Dio _dio = Dio();
 
   @override
   void onInit() {
     super.onInit();
+    print("HomeController inicializado");
     fetchUserData();
-    fetchServices(); // Busca os serviços ao inicializar
+    fetchServices(); 
   }
 
   Future<void> fetchUserData() async {
     try {
       isLoading.value = true;
-      errorMessage.value = ''; // Limpa mensagens de erro anteriores
+      errorMessage.value = ''; 
 
       SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('accessToken');
@@ -38,7 +39,7 @@ class HomeController extends GetxController {
       }
 
       final response = await _dio.get(
-        "${ApiConfig.baseUrl}/userInfo",
+        ApiConfig.userInfo,
         options: Options(headers: {"Authorization": "Bearer $token"}),
       );
       print("Resposta getUserInfo: ${response.statusCode} - ${response.data}");
@@ -59,6 +60,7 @@ class HomeController extends GetxController {
       print("Erro getUserInfo: $e");
     } finally {
       isLoading.value = false;
+      print("Carregamento concluído");
     }
   }
 
@@ -78,7 +80,7 @@ class HomeController extends GetxController {
       }
 
       final response = await _dio.get(
-        "${ApiConfig.baseUrl}/odometer/${selectedVehicle.value}",
+        "${ApiConfig.hodometros}/${selectedVehicle.value}",
         options: Options(headers: {"Authorization": "Bearer $token"}),
       );
 
@@ -110,7 +112,7 @@ class HomeController extends GetxController {
       }
 
       final response = await _dio.put(
-        "${ApiConfig.baseUrl}/odometer/${selectedVehicle.value}",
+        "${ApiConfig.hodometros}${selectedVehicle.value}",
         data: {"odometer": newOdometer},
         options: Options(headers: {"Authorization": "Bearer $token", "Content-Type": "application/json"}),
       );
@@ -132,10 +134,10 @@ class HomeController extends GetxController {
   Future<void> fetchServices() async {
     try {
       services.value = [
-        {"name": "Óleo", "km": 52555, "color": Colors.orange},
-        {"name": "Pneus", "km": 60000, "color": Colors.green},
-        {"name": "Filtros", "km": 50000, "color": Colors.red},
-        {"name": "Correia", "km": 50000, "color": Colors.orange},
+        {"name": "Óleo", "km": 0, "color": Colors.orange},
+        {"name": "Pneus", "km": 0, "color": Colors.green},
+        {"name": "Filtros", "km": 0, "color": Colors.red},
+        {"name": "Correia", "km": 0, "color": Colors.orange},
       ];
     } catch (e) {
       errorMessage.value = "Não foi possível carregar os serviços: $e";
