@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import '../../../shared/config/config.dart'; // Importe suas configurações de API
+import '../../../../shared/config/config.dart'; // Importe suas configurações de API
 
 class HodometroController extends GetxController {
   final formKey = GlobalKey<FormState>();

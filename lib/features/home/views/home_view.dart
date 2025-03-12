@@ -5,6 +5,7 @@ import '../../reports/pages/reports_page.dart';
 import '../../vehicles/pages/vehicle_page.dart';
 import '../../../shared/styles/app_styles.dart';
 import '../../vehicles/maintenance/pages/services_page.dart';
+import '../../vehicles/fueling/pages/fuel_page.dart';
 // import '../../settings/pages/settings_page.dart';
 
 class HomeView extends StatelessWidget {
@@ -20,7 +21,7 @@ class HomeView extends StatelessWidget {
       ReportsPage(), // Página de Relatórios
       VehiclePage(), // Página de Veículos
       ServicesPage(), // Página de Serviços
-      // FuelPage(), // Página de Abastecer
+      FuelPage(), // Página de Abastecer
     ];
 
     return Scaffold(

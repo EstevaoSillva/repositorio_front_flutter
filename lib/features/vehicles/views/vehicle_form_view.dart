@@ -18,7 +18,7 @@ class VehicleFormView extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Column(
               children: [
-                TextFormField(
+                  TextFormField(
                   controller: controller.placaController,
                   decoration: const InputDecoration(labelText: "Placa"),
                   validator: (value) => value!.isEmpty ? "Digite a placa" : null,

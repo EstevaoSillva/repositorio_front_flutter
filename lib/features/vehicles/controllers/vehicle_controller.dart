@@ -14,6 +14,7 @@ class VehicleController extends GetxController {
 
   var isLoading = false.obs;
   var vehicles = <Map<String, dynamic>>[].obs;
+  var userId = 0.obs;
 
   @override
   void onInit() {
@@ -68,7 +69,19 @@ class VehicleController extends GetxController {
     final url = ApiConfig.veiculos;
 
     try {
+      // Recuperar o ID do usuário das preferências compartilhadas
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      int? userId = prefs.getInt(ApiConfig.userInfo); // Substitua 'userId' pela chave correta
+
+      if (userId == null) {
+        isLoading.value = false;
+        Get.snackbar("Erro", "ID do usuário não encontrado.", backgroundColor: Colors.red);
+        return;
+      }
+
+      // Adicionar o ID do usuário aos dados do veículo
       final data = {
+        "usuario": userId.toString(), // Converter o ID para String
         "marca": marcaController.text,
         "modelo": modeloController.text,
         "ano": anoController.text,
@@ -76,7 +89,6 @@ class VehicleController extends GetxController {
         "placa": placaController.text,
       };
 
-      SharedPreferences prefs = await SharedPreferences.getInstance();
       String? token = prefs.getString('accessToken');
 
       if (token == null) {
@@ -163,7 +175,7 @@ class VehicleController extends GetxController {
 
   Future<List<Map<String, dynamic>>> getVehicles() async {
     try {
-      final response = await Dio().get(ApiConfig.veiculos); 
+      final response = await Dio().get(ApiConfig.veiculos);
       final List<dynamic> data = response.data;
 
       final List<Map<String, dynamic>> vehicles = data.map((vehicle) => {

@@ -14,6 +14,7 @@ class HomeController extends GetxController {
   var notifications = <String>[].obs;
   var errorMessage = ''.obs; 
   var services = <Map<String, dynamic>>[].obs; 
+  var userId = ''.obs;
 
   final Dio _dio = Dio();
   final VehicleController vehicleController = Get.find<VehicleController>(); // Obtenha uma instância do VehicleController
@@ -64,6 +65,9 @@ class HomeController extends GetxController {
 
         // Armazena os objetos completos dos veículos em vehicles
         vehicles.value = List<Map<String, dynamic>>.from(response.data["vehicles"]);
+
+        // Armazena o ID do usuário em userId
+        userId.value = response.data["id"]; 
 
         // Se houver veículos, seleciona o primeiro e busca o hodômetro
         if (vehicles.isNotEmpty) {
