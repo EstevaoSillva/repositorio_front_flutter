@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:get/get.dart';
 import 'package:intl/intl.dart';
 
 class FuelPage extends StatefulWidget {
+  const FuelPage({super.key});
+
   @override
   _FuelPageState createState() => _FuelPageState();
 }
@@ -22,9 +23,9 @@ class _FuelPageState extends State<FuelPage> {
     }
   ];
 
-  Map<String, double> calculateMetrics(Map<String, dynamic> refueling) {
-    // ... (código do calculateMetrics)
-  }
+  // Map<String, double> calculateMetrics(Map<String, dynamic> refueling) {
+  //   // ... (código do calculateMetrics)
+  // }
 
   // ... (controllers)
 
@@ -105,7 +106,7 @@ class _FuelPageState extends State<FuelPage> {
   }
 
   Widget _buildMetrics() {
-    var metrics = calculateMetrics(refuelings.first);
+    // var metrics = calculateMetrics(refuelings.first);
     return Row(
       children: [
         Expanded(
@@ -128,8 +129,8 @@ class _FuelPageState extends State<FuelPage> {
               children: [
                 Text('Desempenho',
                     style: TextStyle(fontSize: 12, color: Colors.grey[500])),
-                Text('${metrics['performance']?.toStringAsFixed(1)} km/L',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                // Text('${metrics['performance']?.toStringAsFixed(1)} km/L',
+                //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -155,8 +156,8 @@ class _FuelPageState extends State<FuelPage> {
               children: [
                 Text('Total Gasto',
                     style: TextStyle(fontSize: 12, color: Colors.grey[500])),
-                Text('R\$ ${metrics['totalPrice']?.toStringAsFixed(2)}',
-                    style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                // Text('R\$ ${metrics['totalPrice']?.toStringAsFixed(2)}',
+                //     style: TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
               ],
             ),
           ),
@@ -168,7 +169,7 @@ class _FuelPageState extends State<FuelPage> {
   Widget _buildHistory() {
     return Column(
       children: refuelings.map((refueling) {
-        var metrics = calculateMetrics(refueling);
+        // var metrics = calculateMetrics(refueling);
         return Container(
           margin: EdgeInsets.only(bottom: 16.0),
           padding: EdgeInsets.all(16.0),
@@ -204,16 +205,16 @@ class _FuelPageState extends State<FuelPage> {
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Text('Preço/L: R\$ ${refueling['pricePerLiter'].toStringAsFixed(2)}'),
-                  Text('Total: R\$ ${metrics['totalPrice']?.toStringAsFixed(2)}'),
+                  // Text('Total: R\$ ${metrics['totalPrice']?.toStringAsFixed(2)}'),
                 ],
               ),
               SizedBox(height: 4.0),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text('Desempenho: ${metrics['performance']?.toStringAsFixed(1)} km/L'),
-                  Text('Km/dia: ${metrics['kmPerDay']?.toStringAsFixed(1)} km'),
-                ],
+                // children: [
+                //   Text('Desempenho: ${metrics['performance']?.toStringAsFixed(1)} km/L'),
+                //   Text('Km/dia: ${metrics['kmPerDay']?.toStringAsFixed(1)} km'),
+                // ],
               ),
             ],
           ),

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:lucide_icons/lucide_icons.dart';
-import 'package:get/get.dart'; // Para GetX (navegação e gerenciamento de estado)
+// Para GetX (navegação e gerenciamento de estado)
 
 class ReportsPage extends StatefulWidget {
+  const ReportsPage({super.key});
+
   @override
   _ReportsPageState createState() => _ReportsPageState();
 }
@@ -187,7 +189,7 @@ class ReportCard extends StatelessWidget {
   final String title;
   final String value;
 
-  ReportCard({required this.icon, required this.title, required this.value});
+  const ReportCard({super.key, required this.icon, required this.title, required this.value});
 
   @override
   Widget build(BuildContext context) {
@@ -236,7 +238,7 @@ class ExpenseItem extends StatelessWidget {
   final String date;
   final double amount;
 
-  ExpenseItem({required this.title, required this.date, required this.amount});
+  const ExpenseItem({super.key, required this.title, required this.date, required this.amount});
 
   @override
   Widget build(BuildContext context) {

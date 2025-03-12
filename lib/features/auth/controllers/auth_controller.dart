@@ -131,8 +131,27 @@ class AuthController extends GetxController {
             } else {
               print('Tokens não recebidos na resposta da API.');
             }
+        } else if (response.statusCode == 400) {
+            // Verifica se a API retornou uma mensagem específica para usuário existente
+            if (response.data is Map && response.data.containsKey('message')) {
+                String message = response.data['message'];
+                if (message.contains('usuário já existe')) {
+                    errorMessage.value = "Este usuário já está cadastrado.";
+                    print("Erro ao registrar: Usuário já existe.");
+                } else if (message.contains('email já existe')){
+                    errorMessage.value = "Este email já está cadastrado.";
+                    print("Erro ao registrar: Email já existe.");
+                } else {
+                    errorMessage.value = "Erro ao registrar: ${response.data}";
+                    print("Erro ao registrar: ${response.data}");
+                }
+            } else {
+                errorMessage.value = "Erro ao registrar: ${response.data}";
+                print("Erro ao registrar: ${response.data}");
+            }
         } else {
             errorMessage.value = "Erro ao registrar: ${response.data}";
+            print("Erro ao registrar: ${response.data}");
         }
     } catch (e) {
         errorMessage.value = "Erro ao conectar ao servidor: $e";

@@ -2,26 +2,39 @@ import 'package:get/get.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../shared/config/config.dart';
-import 'package:flutter/material.dart'; // Importe o Material para cores
+import 'package:flutter/material.dart'; 
+import 'package:manutencar_mobile/features/vehicles/controllers/vehicle_controller.dart';
 
 class HomeController extends GetxController {
   var nomeUsuario = "".obs;
   var isLoading = true.obs;
   var odometer = 0.obs;
   var selectedVehicle = "".obs;
-  var vehicles = <String>[].obs;
+  var vehicles = <Map<String, dynamic>>[].obs;
   var notifications = <String>[].obs;
   var errorMessage = ''.obs; 
   var services = <Map<String, dynamic>>[].obs; 
 
   final Dio _dio = Dio();
+  final VehicleController vehicleController = Get.find<VehicleController>(); // Obtenha uma instância do VehicleController
 
   @override
   void onInit() {
     super.onInit();
-    print("HomeController inicializado");
     fetchUserData();
     fetchServices(); 
+    fetchVehicles();
+  }
+
+  Future<void> fetchVehicles() async {
+    isLoading.value = true;
+    try {
+      vehicles.assignAll(await vehicleController.getVehicles()); // Busque os veículos e atualize a lista
+    } catch (e) {
+      print("Erro ao buscar veículos: $e");
+    } finally {
+      isLoading.value = false;
+    }
   }
 
   Future<void> fetchUserData() async {
@@ -43,11 +56,22 @@ class HomeController extends GetxController {
         options: Options(headers: {"Authorization": "Bearer $token"}),
       );
       print("Resposta getUserInfo: ${response.statusCode} - ${response.data}");
+      
+      // Verifica se a resposta foi bem sucedida
       if (response.statusCode == 200) {
-        nomeUsuario.value = response.data["Nome"];
-        vehicles.value = List<String>.from(response.data["vehicles"]);
+        // Armazena o nome do usuário em nomeUsuario
+        nomeUsuario.value = response.data["nome"];
+
+        // Armazena os objetos completos dos veículos em vehicles
+        vehicles.value = List<Map<String, dynamic>>.from(response.data["vehicles"]);
+
+        // Se houver veículos, seleciona o primeiro e busca o hodômetro
         if (vehicles.isNotEmpty) {
-          selectedVehicle.value = vehicles.first;
+
+          // Converte o ID do veículo para String
+          selectedVehicle.value = vehicles.first['id'].toString();
+
+          // Busca o hodômetro
           fetchOdometer();
         }
       } else {
