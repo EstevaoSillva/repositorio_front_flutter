@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart'; 
+import 'package:intl/date_symbol_data_local.dart';
+
 import 'features/auth/pages/login_page.dart';
 import 'features/home/views/home_view.dart';
 import 'features/auth/pages/register_page.dart';
@@ -11,7 +13,9 @@ import 'features/vehicles/controllers/vehicle_controller.dart';
 import 'features/auth/controllers/auth_controller.dart'; 
 import 'features/home/controllers/home_controller.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await initializeDateFormatting('pt_BR', null);
   runApp(MyApp());
 }
 

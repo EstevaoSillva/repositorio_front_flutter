@@ -19,7 +19,41 @@ class VehicleController extends GetxController {
   @override
   void onInit() {
     super.onInit();
+    fetchUserId();
     fetchVehicles();
+  }
+
+  /// Obtém o ID do usuário autenticado e armazena no SharedPreferences
+  Future<void> fetchUserId() async {
+    final dio = Dio();
+    final url = ApiConfig.userInfo; // Endpoint correto para buscar as informações do usuário
+
+    try {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? token = prefs.getString('accessToken');
+
+      if (token == null) {
+        Get.snackbar("Erro", "Usuário não autenticado.", backgroundColor: Colors.red);
+        return;
+      }
+
+      final response = await dio.get(
+        url,
+        options: Options(
+          headers: {
+            "Authorization": "Bearer $token",
+          },
+        ),
+      );
+
+      if (response.statusCode == 200) {
+        final userData = response.data;
+        await prefs.setInt('userId', userData['id']); // Salvar o ID corretamente
+        userId.value = userData['id']; // Atualizar variável observável
+      }
+    } catch (e) {
+      print("Erro ao buscar dados do usuário: $e");
+    }
   }
 
   Future<void> fetchVehicles() async {
@@ -71,7 +105,8 @@ class VehicleController extends GetxController {
     try {
       // Recuperar o ID do usuário das preferências compartilhadas
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      int? userId = prefs.getInt(ApiConfig.userInfo); // Substitua 'userId' pela chave correta
+      int? userId = prefs.getInt('userId'); // Substitua 'userId' pela chave correta
+      print("ID do usuário salvo: ${prefs.getInt('userId')}");
 
       if (userId == null) {
         isLoading.value = false;

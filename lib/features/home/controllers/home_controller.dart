@@ -69,6 +69,10 @@ class HomeController extends GetxController {
         // Armazena o ID do usuário em userId
         userId.value = response.data["id"]; 
 
+         // Armazenar o ID do usuário nas preferências compartilhadas
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        await prefs.setInt('userId', response.data["id"]); // Adicione esta linha
+
         // Se houver veículos, seleciona o primeiro e busca o hodômetro
         if (vehicles.isNotEmpty) {
 
